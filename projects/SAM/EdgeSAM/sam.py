@@ -318,6 +318,7 @@ class EdgeSAMONNX(object):
         points = []
         labels = []
         for mark in prompt:
+            print(mark)
             if mark["type"] == "point":
                 points.append(mark["data"])
                 labels.append(mark["label"])

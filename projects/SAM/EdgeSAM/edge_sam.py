@@ -252,12 +252,15 @@ if __name__ == "__main__":
     edge_sam = EdgeSAM(model_config)
     edge_sam.set_output_mode("polygon")
     # edge_sam.set_auto_labeling_marks([(100, 100), (200, 200)])
-    prompt = {'type': 'point', 'data': [168, 391], 'label': 1}
-    edge_sam.set_auto_labeling_marks([prompt])
+    # prompt = [{'type': 'point', 'data': [277, 356], 'label': 1}]
+    prompt = [{'type': 'point', 'data': [400, 1060], 'label': 1}]
+    edge_sam.set_auto_labeling_marks(prompt)
     result = edge_sam.predict_shapes(None, "demo.jpg")
     print(result.shapes)
-    # 将这些polygon画到demo.jpg上
+    # 将这些polygon画到demo.jpg上，将上面prompt中2个点画到demo.jpg上，要明显
     image = cv2.imread("demo.jpg")
     for shape in result.shapes:
         cv2.polylines(image, [np.array(shape)], True, (0, 0, 255), 2)
+    for point in prompt:
+        cv2.circle(image, (point['data'][0], point['data'][1]), 10, (0, 255, 0), -1)
     cv2.imwrite("demo_result.jpg", image)
